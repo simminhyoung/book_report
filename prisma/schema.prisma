@@ -15,6 +15,8 @@ model User {
   createdAt DateTime  @default(now())
   reviews   Review[]
   sessions  Session[]
+  likes     Like[]
+  comments  Comment[]
 }
 
 model Session {
@@ -49,9 +51,36 @@ model Review {
 
   isPublic    Boolean  @default(false)
 
+  likes       Like[]
+  comments    Comment[]
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@index([bookTitle])
   @@index([isPublic])
+  @@index([genre])
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  reviewId  String
+  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([reviewId, userId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  reviewId  String
+  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  body      String
+  createdAt DateTime @default(now())
+
+  @@index([reviewId])
 }

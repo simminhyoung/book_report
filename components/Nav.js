@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { logoutAction } from "@/lib/actions";
+import NavTabs from "./NavTabs";
 
 export default async function Nav() {
   const user = await getCurrentUser();
@@ -8,15 +9,19 @@ export default async function Nav() {
   return (
     <nav className="topnav">
       <div className="topnav-inner">
-        <Link href="/" className="brand">
-          📖 독후감 나눔
-        </Link>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 28 }}>
+          <Link href="/" className="brand">
+            독후감 나눔
+          </Link>
+          <NavTabs />
+        </div>
         <div className="navlinks">
-          <Link href="/explore">둘러보기</Link>
           {user ? (
             <>
-              <Link href="/my">내 독후감</Link>
-              <span>{user.name || user.email}님</span>
+              <span style={{ color: "var(--ink-soft)" }}>{user.name || user.email}님</span>
+              <Link href="/my/write" className="btn small">
+                독후감 쓰기
+              </Link>
               <form action={logoutAction}>
                 <button type="submit" className="btn secondary small">
                   로그아웃

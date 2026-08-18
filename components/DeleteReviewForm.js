@@ -13,7 +13,18 @@ export default function DeleteReviewForm({ id }) {
       }}
     >
       <input type="hidden" name="id" value={id} />
-      <button type="submit" className="btn danger small">
+      <button
+        type="submit"
+        style={{
+          border: "none",
+          background: "none",
+          padding: 0,
+          font: "inherit",
+          fontSize: 12.5,
+          color: "var(--ink-faint)",
+          cursor: "pointer",
+        }}
+      >
         삭제
       </button>
     </form>
