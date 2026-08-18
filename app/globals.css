@@ -1,0 +1,314 @@
+:root {
+  --bg: #faf8f5;
+  --card: #ffffff;
+  --ink: #2b2620;
+  --ink-soft: #6b645a;
+  --brand: #a15c3b;
+  --brand-dark: #7e4327;
+  --border: #e7e1d8;
+  --danger: #b3432b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+    "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+}
+
+a {
+  color: var(--brand-dark);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 20px 64px;
+}
+
+nav.topnav {
+  border-bottom: 1px solid var(--border);
+  background: var(--card);
+}
+
+.topnav-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--ink);
+}
+
+.navlinks {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 14px;
+}
+
+.navlinks form {
+  display: inline;
+}
+
+.btn {
+  display: inline-block;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--brand);
+  color: #fff;
+}
+
+.btn:hover {
+  background: var(--brand-dark);
+  text-decoration: none;
+}
+
+.btn.secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--border);
+}
+
+.btn.secondary:hover {
+  background: #f2eee7;
+}
+
+.btn.danger {
+  background: var(--danger);
+}
+
+.btn.link {
+  background: transparent;
+  color: var(--brand-dark);
+  padding: 0;
+  font-weight: 600;
+}
+
+.btn.small {
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+h1 {
+  font-size: 26px;
+  margin: 32px 0 8px;
+}
+
+h2 {
+  font-size: 18px;
+  margin: 0 0 4px;
+}
+
+.subtitle {
+  color: var(--ink-soft);
+  margin-bottom: 28px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.meta {
+  color: var(--ink-soft);
+  font-size: 13px;
+  margin: 4px 0 10px;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.badge.public {
+  background: #e7f3e6;
+  color: #2f6b2c;
+}
+
+.badge.private {
+  background: #f2eee7;
+  color: var(--ink-soft);
+}
+
+.stars {
+  color: #d99a2b;
+  letter-spacing: 1px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.empty {
+  color: var(--ink-soft);
+  text-align: center;
+  padding: 48px 0;
+}
+
+form.stacked {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field label {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.field .hint {
+  font-weight: 400;
+  color: var(--ink-soft);
+  font-size: 12px;
+  margin-left: 6px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  background: #fff;
+  color: var(--ink);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox-field input {
+  width: auto;
+}
+
+.error {
+  background: #fbeae5;
+  color: var(--danger);
+  border: 1px solid #f0c6ba;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.searchbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.searchbar input {
+  flex: 1;
+}
+
+.auth-card {
+  max-width: 380px;
+  margin: 60px auto 0;
+}
+
+.auth-card h1 {
+  margin-top: 0;
+}
+
+.auth-switch {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.quotes-block {
+  white-space: pre-wrap;
+  background: #f7f3ec;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+}
+
+.section-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--ink-soft);
+  margin: 18px 0 6px;
+}
+
+.hero {
+  text-align: center;
+  padding: 56px 0 32px;
+}
+
+.hero .actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+}
