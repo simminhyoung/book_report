@@ -37,7 +37,14 @@ export default async function ExplorePage({ searchParams }) {
 
   const where = {
     isPublic: true,
-    ...(q ? { bookTitle: { contains: q } } : {}),
+    ...(q
+      ? {
+          OR: [
+            { bookTitle: { contains: q } },
+            { author: { contains: q } },
+          ],
+        }
+      : {}),
     ...(genre ? { genre } : {}),
     ...(minRating ? { rating: { gte: minRating } } : {}),
   };

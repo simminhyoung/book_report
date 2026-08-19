@@ -516,6 +516,7 @@ h2 {
   font-size: 15px;
   line-height: 1.75;
   color: #413a32;
+  white-space: pre-wrap;
 }
 
 .quotes-block {
