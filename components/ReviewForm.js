@@ -9,18 +9,7 @@ export default function ReviewForm({ action, initial = {}, submitLabel = "저장
         <div className="form-section">
           <div className="section-title">책 정보</div>
 
-          <div className="field">
-            <label htmlFor="bookTitle">책 제목 *</label>
-            <input
-              id="bookTitle"
-              name="bookTitle"
-              type="text"
-              required
-              defaultValue={initial.bookTitle || ""}
-            />
-          </div>
-
-          <CoverPicker initialQuery={initial.bookTitle || ""} initialCoverUrl={initial.coverUrl || ""} />
+          <CoverPicker initialTitle={initial.bookTitle || ""} initialCoverUrl={initial.coverUrl || ""} />
 
           <div className="row">
             <div className="field">

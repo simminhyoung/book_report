@@ -170,7 +170,7 @@ export default async function ExplorePage({ searchParams }) {
                       <div className="review-card-meta">
                         {review.genre && <span className="badge genre">{review.genre}</span>}
                         <Link href={`/explore/${review.id}`} className="title-link">
-                          <h2>{review.bookTitle}</h2>
+                          <h2 className="clamp-2">{review.bookTitle}</h2>
                         </Link>
                         {review.author && (
                           <span style={{ fontSize: 12.5, color: "var(--ink-soft)" }}>
@@ -181,7 +181,9 @@ export default async function ExplorePage({ searchParams }) {
                       </div>
                     </div>
 
-                    {review.oneLiner && <p className="one-liner">{review.oneLiner}</p>}
+                    {review.oneLiner && (
+                      <p className="one-liner clamp-4">{review.oneLiner}</p>
+                    )}
 
                     <div className="engage-row">
                       <span>{review.user.name || review.user.email.split("@")[0]}</span>

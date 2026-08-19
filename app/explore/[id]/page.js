@@ -159,7 +159,10 @@ export default async function PublicReviewPage({ params }) {
               </div>
               {relatedFallback.map((r) => (
                 <Link href={`/explore/${r.id}`} key={r.id} className="related-item">
-                  <span style={{ fontFamily: "var(--serif)", fontSize: 14.5, fontWeight: 700 }}>
+                  <span
+                    className="clamp-2"
+                    style={{ fontFamily: "var(--serif)", fontSize: 14.5, fontWeight: 700 }}
+                  >
                     {r.bookTitle}
                   </span>
                   <span style={{ fontSize: 12, color: "var(--ink-faint)" }}>{r.author}</span>

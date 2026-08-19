@@ -48,7 +48,7 @@ a:hover {
 }
 
 .container {
-  max-width: 1120px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 0 24px 64px;
 }
@@ -61,7 +61,7 @@ nav.topnav {
 }
 
 .topnav-inner {
-  max-width: 1120px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 14px 24px;
   display: flex;
@@ -251,18 +251,34 @@ h2 {
 }
 
 .cover.sm {
-  width: 46px;
-  height: 66px;
+  width: 64px;
+  height: 92px;
 }
 
 .cover.md {
-  width: 52px;
-  height: 74px;
+  width: 84px;
+  height: 120px;
 }
 
 .cover.lg {
-  width: 96px;
-  height: 138px;
+  width: 148px;
+  height: 212px;
+}
+
+/* Multi-line text clamping with ellipsis */
+
+.clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* ---------- Explore layout ---------- */
@@ -327,8 +343,8 @@ h2 {
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
 }
 
 .review-card {
@@ -339,6 +355,18 @@ h2 {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  /* Fixed to the size a fully-filled card needs, so every card in the grid
+     lines up regardless of how much text an individual review has. */
+  height: 340px;
+  overflow: hidden;
+}
+
+.review-card .one-liner {
+  flex: 1;
+}
+
+.review-card .engage-row {
+  flex: none;
 }
 
 .review-card:hover {
@@ -349,6 +377,7 @@ h2 {
 .review-card-top {
   display: flex;
   gap: 13px;
+  flex: none;
 }
 
 .review-card-meta {

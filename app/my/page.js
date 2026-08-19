@@ -88,7 +88,9 @@ export default async function MyReviewsPage({ searchParams }) {
               <Cover src={review.coverUrl} alt={review.bookTitle} size="sm" />
               <div style={{ display: "flex", flexDirection: "column", gap: 6, minWidth: 0 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 9, flexWrap: "wrap" }}>
-                  <h2>{review.bookTitle}</h2>
+                  <h2 className="clamp-2" style={{ maxWidth: 480 }}>
+                    {review.bookTitle}
+                  </h2>
                   <span className={`badge ${review.isPublic ? "public" : "private"}`}>
                     {review.isPublic ? "공개" : "비공개"}
                   </span>
@@ -103,7 +105,11 @@ export default async function MyReviewsPage({ searchParams }) {
                     </>
                   )}
                 </span>
-                {review.oneLiner && <p className="one-liner">{review.oneLiner}</p>}
+                {review.oneLiner && (
+                  <p className="one-liner clamp-4" style={{ maxWidth: 560 }}>
+                    {review.oneLiner}
+                  </p>
+                )}
                 <span style={{ fontSize: 12, color: "var(--ink-mute)" }}>
                   {new Date(review.updatedAt).toLocaleDateString("ko-KR")} 수정 ·{" "}
                   {review.isPublic
