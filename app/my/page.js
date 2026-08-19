@@ -4,6 +4,7 @@ import { requireUser } from "@/lib/auth";
 import { stars } from "@/lib/format";
 import { toggleShare } from "./actions";
 import DeleteReviewForm from "@/components/DeleteReviewForm";
+import Cover from "@/components/Cover";
 
 const TABS = ["전체", "공개", "비공개"];
 
@@ -84,7 +85,7 @@ export default async function MyReviewsPage({ searchParams }) {
         reviews.map((review) => (
           <article className="review-row" key={review.id}>
             <div className="review-row-body">
-              <div className="cover sm" />
+              <Cover src={review.coverUrl} alt={review.bookTitle} size="sm" />
               <div style={{ display: "flex", flexDirection: "column", gap: 6, minWidth: 0 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 9, flexWrap: "wrap" }}>
                   <h2>{review.bookTitle}</h2>

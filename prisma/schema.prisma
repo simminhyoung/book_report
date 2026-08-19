@@ -36,6 +36,7 @@ model Review {
   bookTitle   String
   author      String?
   publisher   String?
+  coverUrl    String?
   genre       String?
   periodStart String?
   periodEnd   String?

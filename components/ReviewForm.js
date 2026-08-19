@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { GENRES } from "@/lib/format";
+import CoverPicker from "./CoverPicker";
 
 export default function ReviewForm({ action, initial = {}, submitLabel = "저장하기" }) {
   return (
@@ -18,6 +19,8 @@ export default function ReviewForm({ action, initial = {}, submitLabel = "저장
               defaultValue={initial.bookTitle || ""}
             />
           </div>
+
+          <CoverPicker initialQuery={initial.bookTitle || ""} initialCoverUrl={initial.coverUrl || ""} />
 
           <div className="row">
             <div className="field">

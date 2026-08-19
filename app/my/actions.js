@@ -13,6 +13,7 @@ function extractReviewData(formData) {
     bookTitle: formData.get("bookTitle")?.toString().trim() || "",
     author: formData.get("author")?.toString().trim() || null,
     publisher: formData.get("publisher")?.toString().trim() || null,
+    coverUrl: formData.get("coverUrl")?.toString().trim() || null,
     genre: formData.get("genre")?.toString().trim() || null,
     periodStart: formData.get("periodStart")?.toString() || null,
     periodEnd: formData.get("periodEnd")?.toString() || null,
@@ -70,6 +71,40 @@ export async function deleteReview(formData) {
     await prisma.review.delete({ where: { id } });
     revalidatePath("/my");
     revalidatePath("/explore");
+  }
+}
+
+// Searches the Kakao Book Search API for cover candidates matching a query
+// (book title, optionally + author). Returns [] on any failure so the UI can
+// fall back to manual entry — this is a nice-to-have, never a hard dependency.
+export async function searchBookCovers(query) {
+  const trimmed = query?.toString().trim();
+  if (!trimmed) return [];
+
+  const apiKey = process.env.KAKAO_API_KEY;
+  if (!apiKey) return [];
+
+  try {
+    const res = await fetch(
+      `https://dapi.kakao.com/v3/search/book?target=title&size=8&query=${encodeURIComponent(
+        trimmed
+      )}`,
+      {
+        headers: { Authorization: `KakaoAK ${apiKey}` },
+        cache: "no-store",
+      }
+    );
+    if (!res.ok) return [];
+
+    const data = await res.json();
+    return (data.documents || []).map((d) => ({
+      title: d.title,
+      author: (d.authors || []).join(", "),
+      publisher: d.publisher,
+      thumbnail: d.thumbnail || "",
+    }));
+  } catch {
+    return [];
   }
 }
 

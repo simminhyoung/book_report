@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { GENRES, stars } from "@/lib/format";
 import LikeButton from "@/components/LikeButton";
+import Cover from "@/components/Cover";
 
 function buildHref(params, overrides) {
   const next = new URLSearchParams();
@@ -165,7 +166,7 @@ export default async function ExplorePage({ searchParams }) {
                 return (
                   <article className="review-card" key={review.id}>
                     <div className="review-card-top">
-                      <div className="cover md" />
+                      <Cover src={review.coverUrl} alt={review.bookTitle} size="md" />
                       <div className="review-card-meta">
                         {review.genre && <span className="badge genre">{review.genre}</span>}
                         <Link href={`/explore/${review.id}`} className="title-link">

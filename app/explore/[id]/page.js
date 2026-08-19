@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { stars } from "@/lib/format";
 import LikeButton from "@/components/LikeButton";
+import Cover from "@/components/Cover";
 import { addComment } from "../actions";
 
 export default async function PublicReviewPage({ params }) {
@@ -52,7 +53,7 @@ export default async function PublicReviewPage({ params }) {
       <div className="detail-layout" style={{ marginTop: 20 }}>
         <div>
           <div className="detail-head">
-            <div className="cover lg" />
+            <Cover src={review.coverUrl} alt={review.bookTitle} size="lg" />
             <div className="detail-head-meta">
               {review.genre && <span className="badge genre">{review.genre}</span>}
               <h1 style={{ fontSize: 28 }}>{review.bookTitle}</h1>
