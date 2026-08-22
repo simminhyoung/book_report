@@ -7,6 +7,30 @@ import LikeButton from "@/components/LikeButton";
 import Cover from "@/components/Cover";
 import { addComment } from "../actions";
 
+export async function generateMetadata({ params }) {
+  const review = await prisma.review.findUnique({ where: { id: params.id } });
+
+  if (!review || !review.isPublic) {
+    return { title: "독후감을 찾을 수 없어요" };
+  }
+
+  const description =
+    review.oneLiner ||
+    review.summary?.slice(0, 140) ||
+    `${review.bookTitle} 독후감`;
+
+  return {
+    title: `${review.bookTitle} 독후감`,
+    description,
+    openGraph: {
+      title: `${review.bookTitle} 독후감`,
+      description,
+      type: "article",
+      images: review.coverUrl ? [{ url: review.coverUrl }] : undefined,
+    },
+  };
+}
+
 export default async function PublicReviewPage({ params }) {
   const user = await getCurrentUser();
 

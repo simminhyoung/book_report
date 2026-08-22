@@ -4,6 +4,11 @@ import { requireUser } from "@/lib/auth";
 import ReviewForm from "@/components/ReviewForm";
 import { updateReview } from "../../actions";
 
+export const metadata = {
+  title: "독후감 수정하기",
+  robots: { index: false, follow: false },
+};
+
 export default async function EditReviewPage({ params }) {
   const user = await requireUser();
   const review = await prisma.review.findUnique({ where: { id: params.id } });

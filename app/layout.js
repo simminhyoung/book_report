@@ -1,9 +1,33 @@
 import "./globals.css";
 import Nav from "@/components/Nav";
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site";
 
 export const metadata = {
-  title: "독후감 나눔",
-  description: "책을 읽고 독후감을 기록하고, 원하는 글만 골라 공유해보세요.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    locale: "ko_KR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+  },
+  verification: {
+    google: "jbJKKw7HVAKV3Wksp6PdFtzqSJGqbsNthMViA3um9oA",
+    other: {
+      "naver-site-verification": "882483792012c5190767d91dccc84a071378d10a",
+    },
+  },
 };
 
 export default function RootLayout({ children }) {

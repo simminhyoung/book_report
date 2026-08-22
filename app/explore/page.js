@@ -5,6 +5,11 @@ import { GENRES, stars } from "@/lib/format";
 import LikeButton from "@/components/LikeButton";
 import Cover from "@/components/Cover";
 
+export const metadata = {
+  title: "둘러보기",
+  description: "다른 사람들이 공개한 독후감을 검색하고 읽어보세요.",
+};
+
 function buildHref(params, overrides) {
   const next = new URLSearchParams();
   Object.entries({ ...params, ...overrides }).forEach(([key, value]) => {

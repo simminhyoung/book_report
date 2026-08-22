@@ -6,6 +6,11 @@ import { toggleShare } from "./actions";
 import DeleteReviewForm from "@/components/DeleteReviewForm";
 import Cover from "@/components/Cover";
 
+export const metadata = {
+  title: "내 독후감",
+  robots: { index: false, follow: false },
+};
+
 const TABS = ["전체", "공개", "비공개"];
 
 export default async function MyReviewsPage({ searchParams }) {

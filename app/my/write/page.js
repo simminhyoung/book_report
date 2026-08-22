@@ -2,6 +2,11 @@ import { requireUser } from "@/lib/auth";
 import ReviewForm from "@/components/ReviewForm";
 import { createReview } from "../actions";
 
+export const metadata = {
+  title: "새 독후감 쓰기",
+  robots: { index: false, follow: false },
+};
+
 export default async function WriteReviewPage() {
   await requireUser();
 
