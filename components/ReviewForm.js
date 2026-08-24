@@ -1,6 +1,8 @@
 import { Fragment } from "react";
 import { GENRES } from "@/lib/format";
 import CoverPicker from "./CoverPicker";
+import OneLinerField from "./OneLinerField";
+import WriteProgress from "./WriteProgress";
 
 export default function ReviewForm({ action, initial = {}, submitLabel = "저장하기" }) {
   return (
@@ -88,18 +90,7 @@ export default function ReviewForm({ action, initial = {}, submitLabel = "저장
             </div>
           </div>
 
-          <div className="field">
-            <label htmlFor="oneLiner">
-              한 줄 총평 <span className="hint">목록과 상세에서 가장 먼저 보이는 문장</span>
-            </label>
-            <input
-              id="oneLiner"
-              name="oneLiner"
-              type="text"
-              maxLength={80}
-              defaultValue={initial.oneLiner || ""}
-            />
-          </div>
+          <OneLinerField initialValue={initial.oneLiner || ""} />
         </div>
 
         <div className="form-section">
@@ -141,10 +132,26 @@ export default function ReviewForm({ action, initial = {}, submitLabel = "저장
               <textarea id="recommend" name="recommend" defaultValue={initial.recommend || ""} />
             </div>
           </div>
+
+          <div className="field">
+            <label htmlFor="note">
+              나에게 해주고 싶은 말{" "}
+              <span className="hint">'과거의 내가 보내는 말'에서 다시 만나요</span>
+            </label>
+            <textarea
+              id="note"
+              name="note"
+              className="note-input"
+              placeholder="지금의 나에게, 그리고 나중에 이 글을 다시 읽을 나에게 한마디."
+              defaultValue={initial.note || ""}
+            />
+          </div>
         </div>
       </div>
 
       <aside className="write-sidebar">
+        <WriteProgress />
+
         <div className="card" style={{ marginBottom: 0 }}>
           <div className="toggle-row">
             <div className="toggle-copy">

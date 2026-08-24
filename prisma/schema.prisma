@@ -8,15 +8,16 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(cuid())
-  email     String    @unique
-  password  String
-  name      String?
-  createdAt DateTime  @default(now())
-  reviews   Review[]
-  sessions  Session[]
-  likes     Like[]
-  comments  Comment[]
+  id          String      @id @default(cuid())
+  email       String      @unique
+  password    String
+  name        String?
+  createdAt   DateTime    @default(now())
+  reviews     Review[]
+  sessions    Session[]
+  likes       Like[]
+  comments    Comment[]
+  selfReplies SelfReply[]
 }
 
 model Session {
@@ -49,11 +50,13 @@ model Review {
   application String?
   oneLiner    String?
   recommend   String?
+  note        String?
 
   isPublic    Boolean  @default(false)
 
   likes       Like[]
   comments    Comment[]
+  selfReplies SelfReply[]
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -75,6 +78,21 @@ model Like {
 }
 
 model Comment {
+  id        String   @id @default(cuid())
+  reviewId  String
+  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  body      String
+  createdAt DateTime @default(now())
+
+  @@index([reviewId])
+}
+
+// A reply the author leaves for themselves on one of their own past reviews —
+// powers "과거의 내가 보내는 말" (a past review resurfaces at random and the
+// author can answer their past self). Always tied to the review's owner.
+model SelfReply {
   id        String   @id @default(cuid())
   reviewId  String
   review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)

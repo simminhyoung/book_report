@@ -25,6 +25,7 @@ function extractReviewData(formData) {
     application: formData.get("application")?.toString() || null,
     oneLiner: formData.get("oneLiner")?.toString() || null,
     recommend: formData.get("recommend")?.toString() || null,
+    note: formData.get("note")?.toString() || null,
     isPublic: formData.get("isPublic") === "on",
   };
 }
@@ -37,10 +38,11 @@ export async function createReview(formData) {
     throw new Error("책 제목은 필수예요.");
   }
 
-  await prisma.review.create({ data: { ...data, userId: user.id } });
+  const created = await prisma.review.create({ data: { ...data, userId: user.id } });
   revalidatePath("/my");
+  revalidatePath("/my/stats");
   revalidatePath("/explore");
-  redirect("/my");
+  redirect(`/my/${created.id}`);
 }
 
 export async function updateReview(id, formData) {
@@ -57,8 +59,11 @@ export async function updateReview(id, formData) {
 
   await prisma.review.update({ where: { id }, data });
   revalidatePath("/my");
+  revalidatePath(`/my/${id}`);
+  revalidatePath("/my/stats");
   revalidatePath("/explore");
-  redirect("/my");
+  revalidatePath(`/explore/${id}`);
+  redirect(`/my/${id}`);
 }
 
 export async function deleteReview(formData) {
@@ -70,8 +75,15 @@ export async function deleteReview(formData) {
   if (existing && existing.userId === user.id) {
     await prisma.review.delete({ where: { id } });
     revalidatePath("/my");
+    revalidatePath("/my/stats");
+    revalidatePath("/my/past");
     revalidatePath("/explore");
   }
+
+  // Deleting can be triggered from the /my/[id] detail page as well as the
+  // grid itself — always land back on the list so we never re-render a
+  // detail page for a review that no longer exists.
+  redirect("/my");
 }
 
 // Searches the Kakao Book Search API for cover candidates matching a query
@@ -108,6 +120,21 @@ export async function searchBookCovers(query) {
   }
 }
 
+// Adds a reply to one's own past review — the "오늘의 나는 어떻게 생각하나요?"
+// box on the 과거의 내가 보내는 말 page (and on the review's own detail page).
+export async function addSelfReply(reviewId, formData) {
+  const user = await requireUser();
+  const body = formData.get("body")?.toString().trim();
+  if (!body) return;
+
+  const review = await prisma.review.findUnique({ where: { id: reviewId } });
+  if (!review || review.userId !== user.id) return;
+
+  await prisma.selfReply.create({ data: { reviewId, userId: user.id, body } });
+  revalidatePath(`/my/${reviewId}`);
+  revalidatePath("/my/past");
+}
+
 export async function toggleShare(formData) {
   const user = await requireUser();
   const id = formData.get("id")?.toString();
@@ -120,6 +147,8 @@ export async function toggleShare(formData) {
       data: { isPublic: !existing.isPublic },
     });
     revalidatePath("/my");
+    revalidatePath(`/my/${id}`);
     revalidatePath("/explore");
+    revalidatePath(`/explore/${id}`);
   }
 }

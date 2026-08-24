@@ -1,10 +1,10 @@
 import Link from "next/link";
 import prisma from "@/lib/prisma";
 import { requireUser } from "@/lib/auth";
-import { stars } from "@/lib/format";
+import { stars, formatDate } from "@/lib/format";
 import { toggleShare } from "./actions";
-import DeleteReviewForm from "@/components/DeleteReviewForm";
 import Cover from "@/components/Cover";
+import MyShell from "@/components/MyShell";
 
 export const metadata = {
   title: "내 독후감",
@@ -23,14 +23,6 @@ export default async function MyReviewsPage({ searchParams }) {
     include: { _count: { select: { likes: true, comments: true } } },
   });
 
-  const total = allReviews.length;
-  const publicCount = allReviews.filter((r) => r.isPublic).length;
-  const privateCount = total - publicCount;
-  const rated = allReviews.filter((r) => r.rating);
-  const avgRating = rated.length
-    ? (rated.reduce((sum, r) => sum + r.rating, 0) / rated.length).toFixed(1)
-    : "-";
-
   const reviews = allReviews.filter((r) => {
     if (tab === "공개") return r.isPublic;
     if (tab === "비공개") return !r.isPublic;
@@ -38,8 +30,8 @@ export default async function MyReviewsPage({ searchParams }) {
   });
 
   return (
-    <div>
-      <div className="page-head">
+    <MyShell>
+      <div className="page-head" style={{ margin: "0 0 18px" }}>
         <div>
           <h1>내 독후감</h1>
           <span className="subtitle" style={{ marginBottom: 0 }}>
@@ -59,87 +51,50 @@ export default async function MyReviewsPage({ searchParams }) {
         </div>
       </div>
 
-      <div className="stat-row">
-        <div className="stat-tile">
-          <span className="label">기록한 독후감</span>
-          <span className="value">{total}편</span>
-        </div>
-        <div className="stat-tile">
-          <span className="label">공개</span>
-          <span className="value" style={{ color: "var(--good)" }}>
-            {publicCount}편
-          </span>
-        </div>
-        <div className="stat-tile">
-          <span className="label">비공개</span>
-          <span className="value" style={{ color: "var(--ink-soft)" }}>
-            {privateCount}편
-          </span>
-        </div>
-        <div className="stat-tile">
-          <span className="label">평균 별점</span>
-          <span className="value" style={{ color: "var(--star)" }}>
-            {avgRating}
-          </span>
-        </div>
-      </div>
-
       {reviews.length === 0 ? (
         <div className="empty">이 조건에 맞는 독후감이 아직 없어요.</div>
       ) : (
-        reviews.map((review) => (
-          <article className="review-row" key={review.id}>
-            <div className="review-row-body">
-              <Cover src={review.coverUrl} alt={review.bookTitle} size="sm" />
-              <div style={{ display: "flex", flexDirection: "column", gap: 6, minWidth: 0 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 9, flexWrap: "wrap" }}>
-                  <h2 className="clamp-2" style={{ maxWidth: 480 }}>
-                    {review.bookTitle}
-                  </h2>
+        <div className="card-grid">
+          {reviews.map((review) => (
+            <article className="review-card mine" key={review.id}>
+              <div className="review-card-top">
+                <Cover src={review.coverUrl} alt={review.bookTitle} size="md" />
+                <div className="review-card-meta">
                   <span className={`badge ${review.isPublic ? "public" : "private"}`}>
                     {review.isPublic ? "공개" : "비공개"}
                   </span>
+                  <Link href={`/my/${review.id}`} className="title-link">
+                    <h2 className="clamp-2">{review.bookTitle}</h2>
+                  </Link>
+                  <span style={{ fontSize: 12.5, color: "var(--ink-soft)" }}>
+                    {review.author}
+                    {review.genre && ` · ${review.genre}`}
+                  </span>
+                  {review.rating && <span className="stars">{stars(review.rating)}</span>}
                 </div>
-                <span style={{ fontSize: 12.5, color: "var(--ink-faint)" }}>
-                  {review.author}
-                  {review.genre && ` · ${review.genre}`}
-                  {review.rating && (
-                    <>
-                      {" · "}
-                      <span className="stars">{stars(review.rating)}</span>
-                    </>
-                  )}
-                </span>
-                {review.oneLiner && (
-                  <p className="one-liner clamp-4" style={{ maxWidth: 560 }}>
-                    {review.oneLiner}
-                  </p>
-                )}
-                <span style={{ fontSize: 12, color: "var(--ink-mute)" }}>
-                  {new Date(review.updatedAt).toLocaleDateString("ko-KR")} 수정 ·{" "}
+              </div>
+
+              {review.oneLiner && <p className="one-liner clamp-4">{review.oneLiner}</p>}
+
+              <div className="engage-row">
+                <span>{formatDate(review.updatedAt)} 수정</span>
+                <span>
                   {review.isPublic
                     ? `♥ ${review._count.likes} · 💬 ${review._count.comments}`
                     : "나만 볼 수 있어요"}
                 </span>
               </div>
-            </div>
-            <div className="review-row-actions">
-              <form action={toggleShare}>
+
+              <form action={toggleShare} className="mine-card-toggle">
                 <input type="hidden" name="id" value={review.id} />
-                <button type="submit" className="btn secondary small">
+                <button type="submit" className="btn secondary small" style={{ width: "100%" }}>
                   {review.isPublic ? "비공개로 바꾸기" : "공개하기"}
                 </button>
               </form>
-              <div className="row-links">
-                <Link href={`/my/${review.id}/edit`} style={{ color: "var(--brand-dark)", fontWeight: 600 }}>
-                  수정
-                </Link>
-                <DeleteReviewForm id={review.id} />
-              </div>
-            </div>
-          </article>
-        ))
+            </article>
+          ))}
+        </div>
       )}
-    </div>
+    </MyShell>
   );
 }
