@@ -525,6 +525,13 @@ h2 {
 .detail-head {
   display: flex;
   gap: 22px;
+  margin-bottom: 24px;
+}
+
+/* Caps the explore detail page's main column to the same width the /my
+   detail page ends up with once its sidebar eats into the container. */
+.detail-bounds {
+  max-width: 1140px;
 }
 
 .detail-head-meta {
@@ -551,6 +558,7 @@ h2 {
 .quotes-block {
   white-space: pre-wrap;
   background: #f4f0e8;
+  border: 1px solid #e5ddc9;
   border-radius: 8px;
   padding: 14px 16px;
   font-family: var(--serif);

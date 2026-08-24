@@ -69,7 +69,7 @@ export default async function PublicReviewPage({ params }) {
   const addCommentWithId = addComment.bind(null, review.id);
 
   return (
-    <div>
+    <div className="detail-bounds">
       <Link href="/explore" style={{ fontSize: 13.5, color: "var(--brand-dark)", fontWeight: 600 }}>
         ← 둘러보기
       </Link>
