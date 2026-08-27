@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { GENRES, stars } from "@/lib/format";
 import LikeButton from "@/components/LikeButton";
 import Cover from "@/components/Cover";
+import ExploreFilterToggle from "@/components/ExploreFilterToggle";
 
 export const metadata = {
   title: "둘러보기",
@@ -95,85 +96,118 @@ export default async function ExplorePage({ searchParams }) {
       </div>
 
       <div className="explore-layout">
-        <aside>
-          {/* Each filter is a native <details>/<summary> disclosure — no
-              client JS needed. Desktop forces the body always visible via
-              CSS (see .filter-body in globals.css) so it looks/behaves like
-              the old always-open sidebar; on mobile the same markup collapses
-              into a tap-to-open toggle button whose label mirrors the current
-              selection ("장르 전체" / 에세이 / …), matching the design. */}
-          <details className="filter-block">
-            <summary>
-              <span className="section-title">장르</span>
-              <span className="filter-current">{genre || "장르 전체"}</span>
-              <span className="caret" aria-hidden="true">▾</span>
-            </summary>
-            <div className="filter-body">
-              <div className="chip-row">
+        {/* Desktop: original always-open sidebar, unchanged markup. Hidden
+            on mobile via CSS. */}
+        <aside className="aside-desktop">
+          <div className="filter-block">
+            <div className="section-title">장르</div>
+            <div className="chip-row">
+              <Link
+                href={buildHref(params, { genre: "" })}
+                className={`chip ${genre === "" ? "active" : ""}`}
+              >
+                전체
+              </Link>
+              {GENRES.map((g) => (
                 <Link
-                  href={buildHref(params, { genre: "" })}
-                  className={`chip ${genre === "" ? "active" : ""}`}
+                  key={g}
+                  href={buildHref(params, { genre: g })}
+                  className={`chip ${genre === g ? "active" : ""}`}
                 >
-                  전체
+                  {g}
                 </Link>
-                {GENRES.map((g) => (
-                  <Link
-                    key={g}
-                    href={buildHref(params, { genre: g })}
-                    className={`chip ${genre === g ? "active" : ""}`}
-                  >
-                    {g}
-                  </Link>
-                ))}
-              </div>
+              ))}
             </div>
-          </details>
+          </div>
 
-          <details className="filter-block">
-            <summary>
-              <span className="section-title">별점</span>
-              <span className="filter-current">
-                {minRating ? "★".repeat(minRating) : "별점 전체"}
-              </span>
-              <span className="caret" aria-hidden="true">▾</span>
-            </summary>
-            <div className="filter-body">
-              <div className="filter-list">
-                {RATING_FILTERS.map((f) => (
-                  <Link
-                    key={f.key}
-                    href={buildHref(params, { minRating: f.key })}
-                    className={String(minRating || "") === f.key ? "active" : ""}
-                  >
-                    {f.label}
-                  </Link>
-                ))}
-              </div>
+          <div className="filter-block">
+            <div className="section-title">별점</div>
+            <div className="filter-list">
+              {RATING_FILTERS.map((f) => (
+                <Link
+                  key={f.key}
+                  href={buildHref(params, { minRating: f.key })}
+                  className={String(minRating || "") === f.key ? "active" : ""}
+                >
+                  {f.label}
+                </Link>
+              ))}
             </div>
-          </details>
+          </div>
 
-          <details className="filter-block">
-            <summary>
-              <span className="section-title">정렬</span>
-              <span className="filter-current">
-                {SORTS.find((s) => s.key === sort)?.label || "최신순"}
-              </span>
-              <span className="caret" aria-hidden="true">▾</span>
-            </summary>
-            <div className="filter-body">
-              <div className="filter-list">
-                {SORTS.map((s) => (
-                  <Link
-                    key={s.key}
-                    href={buildHref(params, { sort: s.key })}
-                    className={sort === s.key ? "active" : ""}
-                  >
-                    {s.label}
-                  </Link>
-                ))}
-              </div>
+          <div className="filter-block">
+            <div className="section-title">정렬</div>
+            <div className="filter-list">
+              {SORTS.map((s) => (
+                <Link
+                  key={s.key}
+                  href={buildHref(params, { sort: s.key })}
+                  className={sort === s.key ? "active" : ""}
+                >
+                  {s.label}
+                </Link>
+              ))}
             </div>
-          </details>
+          </div>
+        </aside>
+
+        {/* Mobile: same filters as tap-to-open toggle buttons. Hidden on
+            desktop via CSS. ExploreFilterToggle keeps the open/closed state
+            in React (not the native, uncontrolled <details> open attribute)
+            so it reliably closes both on re-tap and right after a filter
+            Link is picked. */}
+        <aside className="aside-mobile">
+          <ExploreFilterToggle label={genre || "장르 전체"}>
+            <div className="chip-row">
+              <Link
+                href={buildHref(params, { genre: "" })}
+                className={`chip ${genre === "" ? "active" : ""}`}
+              >
+                전체
+              </Link>
+              {GENRES.map((g) => (
+                <Link
+                  key={g}
+                  href={buildHref(params, { genre: g })}
+                  className={`chip ${genre === g ? "active" : ""}`}
+                >
+                  {g}
+                </Link>
+              ))}
+            </div>
+          </ExploreFilterToggle>
+
+          <ExploreFilterToggle
+            label={minRating ? "★".repeat(minRating) : "별점 전체"}
+          >
+            <div className="filter-list">
+              {RATING_FILTERS.map((f) => (
+                <Link
+                  key={f.key}
+                  href={buildHref(params, { minRating: f.key })}
+                  className={String(minRating || "") === f.key ? "active" : ""}
+                >
+                  {f.label}
+                </Link>
+              ))}
+            </div>
+          </ExploreFilterToggle>
+
+          <ExploreFilterToggle
+            label={SORTS.find((s) => s.key === sort)?.label || "최신순"}
+          >
+            <div className="filter-list">
+              {SORTS.map((s) => (
+                <Link
+                  key={s.key}
+                  href={buildHref(params, { sort: s.key })}
+                  className={sort === s.key ? "active" : ""}
+                >
+                  {s.label}
+                </Link>
+              ))}
+            </div>
+          </ExploreFilterToggle>
         </aside>
 
         <div>

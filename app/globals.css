@@ -297,23 +297,11 @@ h2 {
   margin-bottom: 24px;
 }
 
-/* .filter-block is a <details> element. Desktop keeps it permanently
-   "open"-looking regardless of the actual open attribute — .filter-body
-   below has no [open] guard at this (non-mobile) scope, so the content
-   always renders. Only the ≤640px block makes it a real collapsible
-   toggle. */
-.filter-block summary {
-  cursor: default;
-  list-style: none;
-}
-
-.filter-block summary::-webkit-details-marker,
-.filter-block summary::marker {
-  display: none;
-}
-
-.filter-block .filter-current,
-.filter-block .caret {
+/* Two parallel filter sidebars share the .filter-block styling above:
+   .aside-desktop (plain divs, untouched original sidebar) and
+   .aside-mobile (ExploreFilterToggle's tap-to-open buttons). Only one is
+   ever visible at a time — see the ≤640px block for the swap. */
+.aside-mobile {
   display: none;
 }
 
@@ -1658,21 +1646,28 @@ textarea {
     flex: none;
   }
 
-  /* ---- Explore filters become tap-to-open toggle buttons ---- */
+  /* ---- Explore filters: swap the desktop sidebar for tap-to-open
+     toggle buttons (.aside-desktop / .aside-mobile are two parallel
+     renders of the same filters — see app/explore/page.js) ---- */
 
-  .explore-layout > aside {
+  .aside-desktop {
+    display: none;
+  }
+
+  .aside-mobile {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 8px;
   }
 
-  .filter-block {
+  .aside-mobile .filter-block {
     position: relative;
     margin-bottom: 0;
     gap: 0;
   }
 
-  .filter-block summary {
+  .filter-toggle-btn {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1682,41 +1677,31 @@ textarea {
     border: 1px solid var(--border);
     border-radius: 9px;
     padding: 8px 10px;
+    font-family: inherit;
     font-size: 12px;
     font-weight: 600;
     color: var(--ink);
   }
 
-  .filter-block[open] summary {
+  .aside-mobile .filter-block.open .filter-toggle-btn {
     background: var(--ink);
     border-color: var(--ink);
     color: var(--bg);
   }
 
-  .filter-block summary .section-title {
-    display: none;
-  }
-
-  .filter-block .filter-current {
-    display: inline-block;
+  .filter-toggle-btn .filter-current {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .filter-block .caret {
-    display: inline;
+  .filter-toggle-btn .caret {
     flex: none;
     font-size: 9px;
     opacity: 0.7;
   }
 
-  .filter-block .filter-body {
-    display: none;
-  }
-
-  .filter-block[open] .filter-body {
-    display: block;
+  .aside-mobile .filter-block .filter-body {
     position: absolute;
     top: calc(100% + 6px);
     left: 0;
@@ -1729,21 +1714,21 @@ textarea {
     padding: 5px;
   }
 
-  .filter-block:last-child[open] .filter-body {
+  .aside-mobile .filter-block:last-child .filter-body {
     left: auto;
     right: 0;
   }
 
-  .filter-block .filter-body .chip-row,
-  .filter-block .filter-body .filter-list {
+  .aside-mobile .filter-block .filter-body .chip-row,
+  .aside-mobile .filter-block .filter-body .filter-list {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     gap: 1px;
   }
 
-  .filter-block .filter-body .chip,
-  .filter-block .filter-body .filter-list a {
+  .aside-mobile .filter-block .filter-body .chip,
+  .aside-mobile .filter-block .filter-body .filter-list a {
     display: block;
     width: 100%;
     border: none;
@@ -1757,8 +1742,8 @@ textarea {
     white-space: nowrap;
   }
 
-  .filter-block .filter-body .chip.active,
-  .filter-block .filter-body .filter-list a.active {
+  .aside-mobile .filter-block .filter-body .chip.active,
+  .aside-mobile .filter-block .filter-body .filter-list a.active {
     background: var(--brand-tint);
     color: var(--brand-dark);
     font-weight: 700;
