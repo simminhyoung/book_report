@@ -1,5 +1,7 @@
 import "./globals.css";
 import Nav from "@/components/Nav";
+import MobileTabBar from "@/components/MobileTabBar";
+import { getCurrentUser } from "@/lib/auth";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site";
 
 export const metadata = {
@@ -30,7 +32,9 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const user = await getCurrentUser();
+
   return (
     <html lang="ko">
       <head>
@@ -42,8 +46,13 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        <Nav />
+        <Nav user={user} />
         <div className="container">{children}</div>
+        {/* Mobile-only bottom tab bar (둘러보기/내 독후감/쓰기) — replaces the
+            top nav's tabs + write button on small screens. Rendered after
+            the page content so its in-flow spacer reserves space at the
+            bottom of the scrollable page, not up near the header. */}
+        {user && <MobileTabBar />}
       </body>
     </html>
   );

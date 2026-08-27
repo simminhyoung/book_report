@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { getCurrentUser } from "@/lib/auth";
 import { logoutAction } from "@/lib/actions";
 import NavTabs from "./NavTabs";
 
-export default async function Nav() {
-  const user = await getCurrentUser();
-
+// `user` is fetched once in app/layout.js and passed down (also needed there
+// to decide whether to render the mobile bottom tab bar after the page
+// content), rather than querying the session twice per request.
+export default function Nav({ user }) {
   return (
     <nav className="topnav">
       <div className="topnav-inner">
@@ -19,7 +19,7 @@ export default async function Nav() {
           {user ? (
             <>
               <span style={{ color: "var(--ink-soft)" }}>{user.name || user.email}님</span>
-              <Link href="/my/write" className="btn small">
+              <Link href="/my/write" className="btn small nav-write-link">
                 독후감 쓰기
               </Link>
               <form action={logoutAction}>

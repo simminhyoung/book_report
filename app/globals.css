@@ -1501,3 +1501,192 @@ textarea {
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================================
+   Mobile (≤640px) — based on the "독후감 나눔 모바일" design canvas.
+   Desktop layout is untouched above this point; everything here only kicks
+   in on small screens, replacing the top nav's tabs/write button with a
+   fixed bottom tab bar and reflowing the sidebar-based screens to one column.
+   ========================================================================== */
+
+.mobile-tabbar,
+.mobile-tabbar-spacer {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 16px 32px;
+  }
+
+  /* ---- Bottom tab bar replaces the top nav's tabs + write button ---- */
+
+  .navtabs,
+  .nav-write-link {
+    display: none;
+  }
+
+  .mobile-tabbar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    background: #fff;
+    border-top: 1px solid var(--border);
+    padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+  }
+
+  .mobile-tabbar-spacer {
+    display: block;
+    height: calc(54px + env(safe-area-inset-bottom));
+  }
+
+  .mobile-tab-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 7px 0;
+    color: var(--ink-mute);
+  }
+
+  .mobile-tab-item:hover {
+    text-decoration: none;
+  }
+
+  .mobile-tab-item .icon {
+    font-size: 17px;
+    line-height: 1;
+  }
+
+  .mobile-tab-item .label {
+    font-size: 11.5px;
+  }
+
+  .mobile-tab-item.active {
+    color: var(--brand-dark);
+  }
+
+  .mobile-tab-item.active .label {
+    font-weight: 700;
+  }
+
+  /* ---- /my hub: sidebar becomes a horizontal segmented control ---- */
+
+  .my-shell {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .my-aside {
+    position: static;
+    gap: 14px;
+  }
+
+  .my-nav {
+    flex-direction: row;
+    gap: 7px;
+  }
+
+  .my-nav-item {
+    flex: 1;
+    align-items: center;
+    text-align: center;
+    padding: 9px 4px;
+  }
+
+  .my-nav-item .hint {
+    display: none;
+  }
+
+  .my-aside-stats {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .my-stat-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 9px;
+  }
+
+  .my-stat-list .row {
+    flex-direction: column;
+    gap: 3px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 13px;
+  }
+
+  /* ---- Card grids: single column, no fixed height so nothing clips ---- */
+
+  .review-card,
+  .review-card.mine {
+    height: auto;
+  }
+
+  .review-card .one-liner {
+    flex: none;
+  }
+
+  /* ---- Explore filters collapse into a horizontally scrollable strip ---- */
+
+  .explore-layout > aside {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .explore-layout > aside .filter-block {
+    flex: none;
+    margin-bottom: 0;
+    min-width: 150px;
+  }
+
+  .explore-layout > aside .chip-row {
+    flex-wrap: nowrap;
+  }
+
+  /* ---- Detail pages: smaller cover, tighter heading ---- */
+
+  .detail-head {
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .cover.lg {
+    width: 96px;
+    height: 138px;
+  }
+
+  .detail-head-meta h1 {
+    font-size: 21px;
+  }
+
+  .one-liner.lg {
+    font-size: 17px;
+  }
+
+  /* ---- Write form: paired fields stack full-width ---- */
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+
+  /* ---- Stats page: keep the two secondary tiles side by side ---- */
+
+  .stats-hero-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stats-hero-row .stats-tile.dark {
+    grid-column: 1 / -1;
+  }
+}
