@@ -34,16 +34,6 @@ export default async function MyShell({ children }) {
               <span>기록한 독후감</span>
               <strong>{total}편</strong>
             </div>
-            {/* Desktop sidebar: 공개/비공개 as separate rows. */}
-            <div className="row stat-row-public">
-              <span>공개</span>
-              <strong style={{ color: "var(--good)" }}>{publicCount}편</strong>
-            </div>
-            <div className="row stat-row-private">
-              <span>비공개</span>
-              <strong style={{ color: "var(--ink-soft)" }}>{privateCount}편</strong>
-            </div>
-            {/* Mobile: combined into one "공개 · 비공개" tile instead. */}
             <div className="row stat-row-combined">
               <span>공개 · 비공개</span>
               <strong>

@@ -1162,12 +1162,6 @@ textarea {
   justify-content: space-between;
 }
 
-/* Desktop shows 공개/비공개 as separate rows; the combined mobile tile
-   (see the ≤640px block below) stays out of the way until then. */
-.stat-row-combined {
-  display: none;
-}
-
 /* /my card grid — same shell as .review-card, with a share-toggle row */
 
 .review-card.mine {
@@ -1616,15 +1610,12 @@ textarea {
     gap: 9px;
   }
 
-  /* 공개/비공개는 합쳐서 한 칸으로, 평균 별점은 숨김 */
-  .stat-row-public,
-  .stat-row-private,
-  .stat-row-avg {
+  /* 평균 별점은 모바일에서 숨김
+     (.my-stat-list .row가 display:flex를 지정해서(0,2,0) 여기서도 같은
+     구체성 이상으로 맞춰줘야 실제로 가려짐 — 그냥 .stat-row-avg처럼
+     클래스 하나짜리(0,1,0)로는 덮어써지지 않았음) */
+  .my-stat-list .stat-row-avg {
     display: none;
-  }
-
-  .stat-row-combined {
-    display: flex;
   }
 
   .my-stat-list .row {
