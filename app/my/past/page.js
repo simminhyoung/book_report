@@ -57,9 +57,7 @@ function PastContent({ withNote, exclude, addSelfReply }) {
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <div className="past-hero">
         <div className="past-hero-top">
-          <span className="meta">
-            {chosen.bookTitle} · {formatDate(chosen.updatedAt)} 기록
-          </span>
+          <span className="meta">{formatDate(chosen.updatedAt)} 기록</span>
           <Link href={`/my/past?exclude=${chosen.id}`} className="shuffle-btn">
             다른 기록 보기
           </Link>
@@ -67,7 +65,8 @@ function PastContent({ withNote, exclude, addSelfReply }) {
         <p className="quote">{chosen.note}</p>
         <div className="past-hero-foot">
           <span>
-            {chosen.author}
+            {chosen.bookTitle}
+            {chosen.author && ` · ${chosen.author}`}
             {chosen.rating && (
               <>
                 {" · "}
@@ -75,10 +74,10 @@ function PastContent({ withNote, exclude, addSelfReply }) {
               </>
             )}
           </span>
-          <Link href={`/my/${chosen.id}`} className="btn" style={{ marginLeft: "auto" }}>
-            그때 쓴 독후감 열기
-          </Link>
         </div>
+        <Link href={`/my/${chosen.id}`} className="btn" style={{ width: "100%", textAlign: "center" }}>
+          그때 쓴 독후감 열기
+        </Link>
       </div>
 
       <div className="card" style={{ marginBottom: 0 }}>

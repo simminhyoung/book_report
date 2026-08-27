@@ -1162,6 +1162,12 @@ textarea {
   justify-content: space-between;
 }
 
+/* Desktop shows 공개/비공개 as separate rows; the combined mobile tile
+   (see the ≤640px block below) stays out of the way until then. */
+.stat-row-combined {
+  display: none;
+}
+
 /* /my card grid — same shell as .review-card, with a share-toggle row */
 
 .review-card.mine {
@@ -1422,9 +1428,6 @@ textarea {
 }
 
 .past-hero-foot {
-  display: flex;
-  align-items: center;
-  gap: 14px;
   border-top: 1px solid rgba(255, 255, 255, 0.14);
   padding-top: 16px;
   font-size: 13.5px;
@@ -1611,6 +1614,17 @@ textarea {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 9px;
+  }
+
+  /* 공개/비공개는 합쳐서 한 칸으로, 평균 별점은 숨김 */
+  .stat-row-public,
+  .stat-row-private,
+  .stat-row-avg {
+    display: none;
+  }
+
+  .stat-row-combined {
+    display: flex;
   }
 
   .my-stat-list .row {
