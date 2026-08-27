@@ -297,6 +297,26 @@ h2 {
   margin-bottom: 24px;
 }
 
+/* .filter-block is a <details> element. Desktop keeps it permanently
+   "open"-looking regardless of the actual open attribute — .filter-body
+   below has no [open] guard at this (non-mobile) scope, so the content
+   always renders. Only the ≤640px block makes it a real collapsible
+   toggle. */
+.filter-block summary {
+  cursor: default;
+  list-style: none;
+}
+
+.filter-block summary::-webkit-details-marker,
+.filter-block summary::marker {
+  display: none;
+}
+
+.filter-block .filter-current,
+.filter-block .caret {
+  display: none;
+}
+
 .chip-row {
   display: flex;
   flex-wrap: wrap;
@@ -1638,25 +1658,110 @@ textarea {
     flex: none;
   }
 
-  /* ---- Explore filters collapse into a horizontally scrollable strip ---- */
+  /* ---- Explore filters become tap-to-open toggle buttons ---- */
 
   .explore-layout > aside {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    overflow-x: auto;
-    padding-bottom: 6px;
-    -webkit-overflow-scrolling: touch;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
   }
 
-  .explore-layout > aside .filter-block {
-    flex: none;
+  .filter-block {
+    position: relative;
     margin-bottom: 0;
-    min-width: 150px;
+    gap: 0;
   }
 
-  .explore-layout > aside .chip-row {
+  .filter-block summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+    cursor: pointer;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 8px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .filter-block[open] summary {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--bg);
+  }
+
+  .filter-block summary .section-title {
+    display: none;
+  }
+
+  .filter-block .filter-current {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .filter-block .caret {
+    display: inline;
+    flex: none;
+    font-size: 9px;
+    opacity: 0.7;
+  }
+
+  .filter-block .filter-body {
+    display: none;
+  }
+
+  .filter-block[open] .filter-body {
+    display: block;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 140px;
+    z-index: 20;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    box-shadow: 0 14px 30px -12px rgba(43, 38, 32, 0.35);
+    padding: 5px;
+  }
+
+  .filter-block:last-child[open] .filter-body {
+    left: auto;
+    right: 0;
+  }
+
+  .filter-block .filter-body .chip-row,
+  .filter-block .filter-body .filter-list {
+    display: flex;
+    flex-direction: column;
     flex-wrap: nowrap;
+    gap: 1px;
+  }
+
+  .filter-block .filter-body .chip,
+  .filter-block .filter-body .filter-list a {
+    display: block;
+    width: 100%;
+    border: none;
+    border-radius: 7px;
+    padding: 9px 10px;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: left;
+    background: transparent;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .filter-block .filter-body .chip.active,
+  .filter-block .filter-body .filter-list a.active {
+    background: var(--brand-tint);
+    color: var(--brand-dark);
+    font-weight: 700;
   }
 
   /* ---- Detail pages: smaller cover, tighter heading ---- */

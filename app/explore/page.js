@@ -96,56 +96,84 @@ export default async function ExplorePage({ searchParams }) {
 
       <div className="explore-layout">
         <aside>
-          <div className="filter-block">
-            <div className="section-title">장르</div>
-            <div className="chip-row">
-              <Link
-                href={buildHref(params, { genre: "" })}
-                className={`chip ${genre === "" ? "active" : ""}`}
-              >
-                전체
-              </Link>
-              {GENRES.map((g) => (
+          {/* Each filter is a native <details>/<summary> disclosure — no
+              client JS needed. Desktop forces the body always visible via
+              CSS (see .filter-body in globals.css) so it looks/behaves like
+              the old always-open sidebar; on mobile the same markup collapses
+              into a tap-to-open toggle button whose label mirrors the current
+              selection ("장르 전체" / 에세이 / …), matching the design. */}
+          <details className="filter-block">
+            <summary>
+              <span className="section-title">장르</span>
+              <span className="filter-current">{genre || "장르 전체"}</span>
+              <span className="caret" aria-hidden="true">▾</span>
+            </summary>
+            <div className="filter-body">
+              <div className="chip-row">
                 <Link
-                  key={g}
-                  href={buildHref(params, { genre: g })}
-                  className={`chip ${genre === g ? "active" : ""}`}
+                  href={buildHref(params, { genre: "" })}
+                  className={`chip ${genre === "" ? "active" : ""}`}
                 >
-                  {g}
+                  전체
                 </Link>
-              ))}
+                {GENRES.map((g) => (
+                  <Link
+                    key={g}
+                    href={buildHref(params, { genre: g })}
+                    className={`chip ${genre === g ? "active" : ""}`}
+                  >
+                    {g}
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
+          </details>
 
-          <div className="filter-block">
-            <div className="section-title">별점</div>
-            <div className="filter-list">
-              {RATING_FILTERS.map((f) => (
-                <Link
-                  key={f.key}
-                  href={buildHref(params, { minRating: f.key })}
-                  className={String(minRating || "") === f.key ? "active" : ""}
-                >
-                  {f.label}
-                </Link>
-              ))}
+          <details className="filter-block">
+            <summary>
+              <span className="section-title">별점</span>
+              <span className="filter-current">
+                {minRating ? "★".repeat(minRating) : "별점 전체"}
+              </span>
+              <span className="caret" aria-hidden="true">▾</span>
+            </summary>
+            <div className="filter-body">
+              <div className="filter-list">
+                {RATING_FILTERS.map((f) => (
+                  <Link
+                    key={f.key}
+                    href={buildHref(params, { minRating: f.key })}
+                    className={String(minRating || "") === f.key ? "active" : ""}
+                  >
+                    {f.label}
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
+          </details>
 
-          <div className="filter-block">
-            <div className="section-title">정렬</div>
-            <div className="filter-list">
-              {SORTS.map((s) => (
-                <Link
-                  key={s.key}
-                  href={buildHref(params, { sort: s.key })}
-                  className={sort === s.key ? "active" : ""}
-                >
-                  {s.label}
-                </Link>
-              ))}
+          <details className="filter-block">
+            <summary>
+              <span className="section-title">정렬</span>
+              <span className="filter-current">
+                {SORTS.find((s) => s.key === sort)?.label || "최신순"}
+              </span>
+              <span className="caret" aria-hidden="true">▾</span>
+            </summary>
+            <div className="filter-body">
+              <div className="filter-list">
+                {SORTS.map((s) => (
+                  <Link
+                    key={s.key}
+                    href={buildHref(params, { sort: s.key })}
+                    className={sort === s.key ? "active" : ""}
+                  >
+                    {s.label}
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
+          </details>
         </aside>
 
         <div>
