@@ -16,7 +16,7 @@ export default function DeleteReviewForm({ id }) {
       <button
         type="submit"
         className="btn secondary"
-        style={{ width: "100%", color: "var(--ink-faint)" }}
+        style={{ width: "100%", color: "var(--ink-faint)", background: "var(--card)" }}
       >
         삭제
       </button>
