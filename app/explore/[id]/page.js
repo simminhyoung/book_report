@@ -6,6 +6,7 @@ import { stars } from "@/lib/format";
 import LikeButton from "@/components/LikeButton";
 import Cover from "@/components/Cover";
 import { addComment } from "../actions";
+import BuyBookButtons from "@/components/BuyBookButtons";
 
 export async function generateMetadata({ params }) {
   const review = await prisma.review.findUnique({ where: { id: params.id } });
@@ -91,6 +92,7 @@ export default async function PublicReviewPage({ params }) {
                 {review.periodStart && review.periodEnd &&
                   ` · 읽은 기간 ${review.periodStart} – ${review.periodEnd}`}
               </span>
+              <BuyBookButtons bookTitle={review.bookTitle} author={review.author} />
             </div>
           </div>
 
