@@ -13,7 +13,11 @@ export default function DeleteReviewForm({ id }) {
       }}
     >
       <input type="hidden" name="id" value={id} />
-      <button type="submit" className="btn secondary small" style={{ width: "100%" }}>
+      <button
+        type="submit"
+        className="btn secondary"
+        style={{ width: "100%", color: "var(--ink-faint)" }}
+      >
         삭제
       </button>
     </form>
