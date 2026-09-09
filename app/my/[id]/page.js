@@ -7,6 +7,7 @@ import Cover from "@/components/Cover";
 import MyShell from "@/components/MyShell";
 import DeleteReviewForm from "@/components/DeleteReviewForm";
 import { toggleShare, addSelfReply } from "../actions";
+import BuyBookButtons from "@/components/BuyBookButtons";
 
 export const metadata = {
   title: "독후감 상세",
@@ -58,6 +59,7 @@ export default async function MyReviewDetailPage({ params }) {
                   `읽은 기간 ${review.periodStart} – ${review.periodEnd} · `}
                 {formatDate(review.updatedAt)} 수정
               </span>
+                 <BuyBookButtons bookTitle={review.bookTitle} author={review.author} />
             </div>
           </div>
 
