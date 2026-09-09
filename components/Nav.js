@@ -29,12 +29,9 @@ export default function Nav({ user }) {
               </form>
             </>
           ) : (
-            <>
-              <Link href="/login">로그인</Link>
-              <Link href="/signup" className="btn small">
-                회원가입
-              </Link>
-            </>
+            <Link href="/login" className="btn small">
+              로그인
+            </Link>
           )}
         </div>
       </div>

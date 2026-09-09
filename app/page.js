@@ -79,7 +79,7 @@ export default async function HomePage() {
               </>
             ) : (
               <>
-                <Link href="/signup" className="btn">
+                <Link href="/login" className="btn">
                   첫 독후감 남기기
                 </Link>
                 <Link href="/explore" className="btn secondary">

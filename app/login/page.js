@@ -5,6 +5,6 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function LoginPage() {
-  return <LoginForm />;
+export default function LoginPage({ searchParams }) {
+  return <LoginForm error={searchParams?.error} />;
 }

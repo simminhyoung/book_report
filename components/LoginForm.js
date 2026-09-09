@@ -1,45 +1,25 @@
-"use client";
-
-import { useFormState, useFormStatus } from "react-dom";
 import Link from "next/link";
-import { loginAction } from "@/app/login/actions";
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  return (
-    <button type="submit" className="btn" disabled={pending}>
-      {pending ? "로그인 중..." : "로그인"}
-    </button>
-  );
-}
+const ERROR_MESSAGES = {
+  google: "구글 로그인 중 문제가 발생했어요. 다시 시도해주세요.",
+  google_email: "이메일 인증이 안 된 구글 계정이에요. 다른 계정으로 시도해주세요.",
+};
 
-export default function LoginForm() {
-  const [state, formAction] = useFormState(loginAction, null);
-
+export default function LoginForm({ error }) {
   return (
     <div className="card auth-card">
       <h1>로그인</h1>
-      <form action={formAction} className="stacked">
-        {state?.error && <div className="error">{state.error}</div>}
-        <div className="field">
-          <label htmlFor="email">이메일</label>
-          <input id="email" name="email" type="email" required autoComplete="email" />
-        </div>
-        <div className="field">
-          <label htmlFor="password">비밀번호</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            required
-            autoComplete="current-password"
-          />
-        </div>
-        <SubmitButton />
-      </form>
-      <p className="auth-switch">
-        아직 계정이 없으신가요? <Link href="/signup">회원가입</Link>
+      {error && <div className="error">{ERROR_MESSAGES[error] || ERROR_MESSAGES.google}</div>}
+      <p style={{ color: "var(--ink-soft)", fontSize: 14, margin: "12px 0 20px" }}>
+        구글 계정으로 간편하게 시작하세요.
       </p>
+      <Link
+        href="/api/auth/google"
+        className="btn"
+        style={{ width: "100%", textAlign: "center", display: "block" }}
+      >
+        Google로 계속하기
+      </Link>
     </div>
   );
 }
