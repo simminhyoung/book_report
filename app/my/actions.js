@@ -152,3 +152,23 @@ export async function toggleShare(formData) {
     revalidatePath(`/explore/${id}`);
   }
 }
+
+// 구글 로그인 시 자동으로 채워진 이름과 별개로, 사이트에서 보여줄 별명을 직접
+// 정할 수 있게 해줍니다. 비워두면 이메일이 대신 표시돼요 (Nav.js 참고).
+export async function updateNickname(prevState, formData) {
+  const user = await requireUser();
+  const name = formData.get("name")?.toString().trim() || "";
+
+  if (name.length > 30) {
+    return { error: "별명은 30자 이내로 입력해주세요." };
+  }
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { name: name || null },
+  });
+
+  revalidatePath("/my/settings");
+  revalidatePath("/my");
+  redirect("/my/settings?saved=1");
+}
