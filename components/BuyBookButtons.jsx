@@ -34,23 +34,15 @@ export default function BuyBookButtons({ bookTitle, author }) {
   ];
 
   return (
-    <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", margin: "16px 0" }}>
+    <div className="buy-book-buttons">
       {stores.map((store) => (
         <a
           key={store.name}
           href={store.url}
           target="_blank"
           rel="noopener noreferrer sponsored"
-          style={{
-            padding: "8px 16px",
-            borderRadius: "8px",
-            border: `1px solid ${store.color}`,
-            color: store.color,
-            fontSize: "14px",
-            fontWeight: 600,
-            textDecoration: "none",
-            whiteSpace: "nowrap",
-          }}
+          className="buy-book-btn"
+          style={{ color: store.color }}
         >
           {store.name}에서 구매하기
         </a>
